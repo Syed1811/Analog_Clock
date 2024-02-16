@@ -14,9 +14,8 @@ const setClock = () => {
     sec.style.transform = `rotateZ(${ss}deg)`;
 };
 
-// first time
+// Set clock initially and update every 1000 ms
 setClock();
-// Update every 1000 ms
 setInterval(setClock, 1000);
 
 const switchTheme = (evt) => {
@@ -27,7 +26,7 @@ const switchTheme = (evt) => {
         document.documentElement.setAttribute("data-theme", "light");
     } else {
         switchBtn.textContent = "light";
-        // localStorage.setItem("theme", "light"); //add this
+        // localStorage.setItem("theme", "light");
         document.documentElement.setAttribute("data-theme", "dark");
     }
 };
@@ -35,9 +34,16 @@ const switchTheme = (evt) => {
 const switchModeBtn = document.querySelector(".switch-btn");
 switchModeBtn.addEventListener("click", switchTheme, false);
 
-let currentTheme = localStorage.getItem("theme")
-    ? localStorage.getItem("theme")
-    : "light"; // Set default theme to "light" if not stored in localStorage
+// Fix the default theme
+let currentTheme = localStorage.getItem("theme");
+
+if (!currentTheme) {
+    // If no theme is stored, default to dark mode
+    currentTheme = "dark";
+    localStorage.setItem("theme", currentTheme);
+} else {
+    // If a theme is stored, set the switch button text accordingly
+    switchModeBtn.textContent = currentTheme;
+}
 
 document.documentElement.setAttribute("data-theme", currentTheme);
-switchModeBtn.textContent = currentTheme;
